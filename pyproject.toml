@@ -15,5 +15,6 @@ mcp-tool-opt = "main:main"
 
 [dependency-groups]
 dev = [
+    "pre-commit>=4.3.0",
     "ruff>=0.12.8",
 ]

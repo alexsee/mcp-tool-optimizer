@@ -19,23 +19,38 @@ Also give few examples if you think they are applicable.
 Please provide description which reflects these issues. The new description shouldn't be longer than 100 words.
 """
 
-async def mcp_tool_optimize(url: str, tool_name: str, headers: dict[str, str] | None = None) -> Any:
+
+async def mcp_tool_optimize(
+    url: str, tool_name: str, headers: dict[str, str] | None = None
+) -> Any:
+    """Optimize MCP tool descriptions.
+
+    Args:
+        url (str): The URL of the MCP server.
+        tool_name (str): The name of the tool to optimize.
+        headers (dict[str, str] | None): Headers to include in the request.
+
+    Return:
+        Any: The optimized tool description.
+    """
     # define mcp server
     mcp_params = MCPServerStreamableHttpParams(
         url=url,
         headers=headers,
     )
-    mcp_server =  MCPServerStreamableHttp(params=mcp_params, tool_filter=create_static_tool_filter(
-        allowed_tool_names=[tool_name]
-    ))
+    mcp_server = MCPServerStreamableHttp(
+        params=mcp_params,
+        tool_filter=create_static_tool_filter(allowed_tool_names=[tool_name]),
+    )
 
     # define agent
     agent = Agent(
         name="MCP Tool Optimizer",
         description="An agent to optimize MCP tool descriptions.",
         instructions=instructions,
-        mcp_servers=[mcp_server]
+        mcp_servers=[mcp_server],
     )
 
+    # run agent
     result = await Runner.run(agent, "Optimize the tool with the name " + tool_name)
     return result.final_output
