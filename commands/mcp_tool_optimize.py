@@ -46,7 +46,6 @@ async def mcp_tool_optimize(
     # define agent
     agent = Agent(
         name="MCP Tool Optimizer",
-        description="An agent to optimize MCP tool descriptions.",
         instructions=instructions,
         mcp_servers=[mcp_server],
     )
