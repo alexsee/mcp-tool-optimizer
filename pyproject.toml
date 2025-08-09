@@ -1,0 +1,12 @@
+[project]
+name = "mcp-tool-optimizer"
+version = "0.1.0"
+description = "Small and simple cli to optimize tool descriptions of MCP tools leveraging LLMs."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "ruff>=0.12.8",
+]
