@@ -21,7 +21,10 @@ Please provide description which reflects these issues. The new description shou
 
 
 async def mcp_tool_optimize(
-    url: str, tool_name: str, headers: dict[str, str] | None = None
+    url: str,
+    tool_name: str,
+    headers: dict[str, str] | None = None,
+    model: str | None = None,
 ) -> Any:
     """Optimize MCP tool descriptions.
 
@@ -48,6 +51,7 @@ async def mcp_tool_optimize(
         name="MCP Tool Optimizer",
         instructions=instructions,
         mcp_servers=[mcp_server],
+        model=model,
     )
 
     # run agent
