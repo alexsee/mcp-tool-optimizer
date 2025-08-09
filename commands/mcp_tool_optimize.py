@@ -1,6 +1,6 @@
 from typing import Any
 from agents import Agent, Runner
-from agents.mcp.server import MCPServerStreamableHttp, MCPServerStreamableHttpParams
+from agents.mcp.server import MCPServerStreamableHttp
 from agents.mcp import create_static_tool_filter
 
 
@@ -37,23 +37,25 @@ async def mcp_tool_optimize(
         Any: The optimized tool description.
     """
     # define mcp server
-    mcp_params = MCPServerStreamableHttpParams(
-        url=url,
-        headers=headers,
-    )
-    mcp_server = MCPServerStreamableHttp(
-        params=mcp_params,
+    async with MCPServerStreamableHttp(
+        params={
+            "url": url,
+            "headers": headers,
+        },
         tool_filter=create_static_tool_filter(allowed_tool_names=[tool_name]),
-    )
+    ) as mcp_server:
+        await mcp_server.connect()
 
-    # define agent
-    agent = Agent(
-        name="MCP Tool Optimizer",
-        instructions=instructions,
-        mcp_servers=[mcp_server],
-        model=model,
-    )
+        # define agent
+        agent = Agent(
+            name="MCP Tool Optimizer",
+            instructions=instructions,
+            mcp_servers=[mcp_server],
+            model=model,
+        )
 
-    # run agent
-    result = await Runner.run(agent, "Optimize the tool with the name " + tool_name)
-    return result.final_output
+        # run agent
+        result = await Runner.run(agent, "Optimize the tool with the name " + tool_name)
+
+        await mcp_server.cleanup()
+        return result.final_output
