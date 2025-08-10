@@ -12,7 +12,7 @@ dependencies = [
 ]
 
 [project.scripts]
-mcp-tool-opt = "main:main"
+mcp-tool-opt = "main:mcp_tool_optimize_cmd"
 
 [dependency-groups]
 dev = [
