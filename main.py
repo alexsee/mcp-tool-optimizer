@@ -3,8 +3,8 @@ from os import environ
 import click
 
 from commands.mcp_tool_optimize import mcp_tool_optimize
-from lib.agent import set_openai_client
-from lib.click import sync
+from shared.agent import set_openai_client
+from shared.click import sync
 
 
 @click.command()
