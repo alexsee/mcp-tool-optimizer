@@ -3,20 +3,33 @@ from agents import Agent, Runner
 from agents.mcp.server import MCPServerStreamableHttp
 from agents.mcp import create_static_tool_filter
 
+from lib.agent import AgentClickHook
 
-instructions = """
-You are an AI Agent Tool developer can you make the description of a tool more precise and clear.
+
+def get_instructions(tool_name: str) -> str:
+    return f"""
+You are an AI Agent Tool developer that can make the description of a tool more precise and clear.
 The problem is that the LLM sometimes doesn't translate the queries correctly.
 This comes from the fact that the tool description doesn't explain what exactly is allowed and how to use the tool correctly.
 
-How can these issues be avoided by validation i.e. with this tool or external resources or it's just a user mistake? List the main issues and how to avoid them.
+Your task is to create a proper tool description that LLMs can use to understand the tool's functionality and limitations.
+Given the tool description, think of possible example tool calls and produce those that are likely to be correctly executed.
+Think of parameter values that are reasonable, make sense, and are likely tool calls that people use in the real world.
+Use the tool's input schema as a guide for crafting your queries.
 
-Now that the issues and how to avoid them are clear. Please create tool description that addresses these issues. The description is a manual on how to use the tool correctly and what is allowed and what is not.
-It should explain how to avoid the issues that were found in the examples. Add that the tool can be invoked multiple times for better validation of the file system state.
+You have access to the `{tool_name}` tool so you can experiment with different inputs and see how the tool responds.
+Repeat calling the tool with different inputs to explore its behavior.
 
-Also give few examples if you think they are applicable.
+## Structure of the description
+- The description is a manual on how to use the tool correctly and what is allowed and what is not.
+- It should explain how to avoid the issues that were found in the examples.
+- Add that the tool can be invoked multiple times for better validation of the file system state.
+- Also give few examples if you think they are applicable.
+- The new description shouldn't be longer than 100 words.
 
-Please provide description which reflects these issues. The new description shouldn't be longer than 100 words.
+## Output
+- Please create tool description that an LLM can understand.
+- Only return the description of the tool.
 """
 
 
@@ -49,9 +62,10 @@ async def mcp_tool_optimize(
         # define agent
         agent = Agent(
             name="MCP Tool Optimizer",
-            instructions=instructions,
+            instructions=get_instructions(tool_name),
             mcp_servers=[mcp_server],
             model=model,
+            hooks=AgentClickHook(),
         )
 
         # run agent
