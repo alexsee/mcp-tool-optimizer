@@ -20,3 +20,10 @@ dev = [
     "ruff>=0.12.8",
     "ty>=0.0.1a17",
 ]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+extend-select = ["I", "E", "W", "UP", "B", "SIM"]
+ignore = ["E501"]

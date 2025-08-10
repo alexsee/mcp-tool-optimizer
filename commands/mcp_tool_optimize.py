@@ -1,7 +1,8 @@
 from typing import Any
+
 from agents import Agent, Runner
-from agents.mcp.server import MCPServerStreamableHttp
 from agents.mcp import create_static_tool_filter
+from agents.mcp.server import MCPServerStreamableHttp
 
 from lib.agent import AgentClickHook
 
