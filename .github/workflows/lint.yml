@@ -30,9 +30,5 @@ jobs:
       - name: Install the project
         run: uv sync --locked --all-extras --dev
     
-      - name: Activate venv
-        run: source .venv/bin/activate
-
-      - name: Run pre-commit hooks (all files)
-        if: ${{ hashFiles('.pre-commit-config.yaml') != '' }}
-        run: pre-commit run --all-files --show-diff-on-failure
+      - name: Run Ruff
+        run: uv run ruff check --output-format=github .
