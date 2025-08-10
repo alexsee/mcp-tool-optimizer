@@ -32,4 +32,4 @@ jobs:
 
       - name: Run pre-commit hooks (all files)
         if: ${{ hashFiles('.pre-commit-config.yaml') != '' }}
-        run: pre-commit run --all-files --show-diff-on-failure
+        run: uv run pre-commit run --all-files --show-diff-on-failure
