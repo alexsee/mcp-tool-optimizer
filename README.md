@@ -13,7 +13,7 @@ Defaults are aimed at a local Ollama-style endpoint (`http://localhost:11434/v1/
 
 ## Install
 
-You can use uv (recommended if you have it) or plain pip.
+You can use uv:
 
 ### Using uv
 
